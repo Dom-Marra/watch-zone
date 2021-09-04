@@ -1,0 +1,58 @@
+@use '../global/theme';
+
+.input-wrapper.drop-down {
+
+    .icon-wrapper {
+        svg {
+            transition: transform 0.25s ease-in-out;
+        }
+    }
+
+    &.focused {
+        .icon-wrapper {
+            svg {
+                transform: rotate(180deg);
+            }
+        }
+
+        .drop-down-list {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    .drop-down-list {
+        position: absolute;
+        left: 0;
+        top: calc(100% + 0.1rem);
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        background-color: darken(theme.$body-bg, 5%);
+        box-shadow: 0px 2px 8px rgba(#000000, 0.25);
+        visibility: hidden;
+        transition-property: visibility, opacity;
+        transition: 0.25s ease-in-out;
+        opacity: 0;
+        z-index: 2;
+
+        li {
+            padding: 0.4rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.25s ease-in-out;
+            font-size: 0.85rem;
+
+            &.selected {
+                color: map-get(theme.$movie-watch-red, 500)
+            }
+
+            &:hover {
+                background-color: rgba(#000000, 0.15);
+                cursor: pointer;
+            }
+        }
+    }
+}

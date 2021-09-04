@@ -1,0 +1,53 @@
+@use '../global/_theme';
+
+html {
+  height: 100%;
+  width: 100%;
+}
+  
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: theme.$body-bg;
+  font-family: theme.$font-family;
+  font-weight: theme.$body-font-weight;
+  line-height: theme.$line-height;
+}
+
+#root {
+  height: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  box-sizing: border-box;
+  padding-top: 8.6875rem;
+  max-width: theme.$max-width;
+  width: 90%;
+  margin: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: theme.$font-family;
+  font-weight: theme.$heading-font-weight
+}
+
+a {
+  color: inherit;
+  padding: 0 0.25rem;
+  text-decoration: none;
+}
+
+a:focus,
+button:focus {
+  outline: none;
+}
+
+a:focus-visible, 
+button:focus-visible {
+  outline: none;
+  box-shadow: theme.$link-box-shadow white;
+}

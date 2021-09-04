@@ -1,0 +1,72 @@
+@use '../global/theme';
+@use '../mixins/mixins';
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 5rem;
+    background-color: map-get(theme.$movie-watch-red, 400);
+    color: theme.$font-color;
+    margin-top: theme.$spacing;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 1.5rem 2rem;
+
+
+    .logo-container {
+        margin: auto;
+        width: auto;
+
+        img {
+            height: 3rem;
+            width: auto;
+            vertical-align: bottom;
+        }
+
+        p {
+            display: inline-block;
+            margin: 0 0.5rem;
+            font-size: 1.4rem;
+            font-weight: theme.$heading-font-weight;
+            padding-bottom: 0.5rem;
+        }
+    }
+    
+    .copy {
+        margin-top: 2rem;
+        margin-bottom: 0;
+    }
+
+    @media screen and (min-width: 38em) { 
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        .logo-container { 
+            margin: 0;
+        }
+
+        .copy {
+            margin-top: 0;
+        }
+    }
+
+    @media screen and (min-width: 56.25em) {
+
+        .logo-container { 
+            flex: 1;
+        }
+
+        .copy {
+            text-align: center;
+            flex: 1;
+        }
+
+        &::after {
+            content: '';
+            flex: 1;
+        }
+    }
+    
+}

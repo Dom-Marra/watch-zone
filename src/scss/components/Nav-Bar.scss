@@ -1,0 +1,195 @@
+@use '../global/_theme';
+@use '../mixins/mixins';
+
+header.top-header {
+    $height: 4.6875rem;
+
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: map-get(theme.$movie-watch-red, 500);
+    height: $height;
+    color: theme.$font-color;
+    @include mixins.FlexCenterCenter;
+    padding: 0 1rem;
+
+    .menu-toggle {
+        color: inherit;
+        background-color: transparent;
+        border: none;
+        font-size: 1.25rem;
+        padding: 0.75rem;
+        transition: color 0.25s ease-in-out;
+
+        &:hover {
+            color: map-get(theme.$movie-watch-red, A200);
+            cursor: pointer;
+        }
+
+        &.open {
+            margin-right: auto;
+        }
+    }
+
+    .logo-wrapper {
+        @include mixins.FlexCenterCenter;
+        flex: 1;
+        height: 100%;
+        margin-right: auto;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        img {
+            height: 55%;
+            width: auto;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            padding-left: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+
+    .navigation {
+        background-color: map-get(theme.$movie-watch-red, 500);
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        transform: translateX(-105%);
+        height: 100vh;
+        width: 85%;
+        max-width: 20rem;
+        box-shadow: 1px 0px 8px rgba(0, 0, 0, 0.6);
+
+        &.opened,
+        &.closed {
+            transition: transform 0.35s ease-in-out;
+        }
+        
+        &.opened {
+            transform: translateX(0);
+        }
+
+        &.closed {
+            transform: translateX(-105%);
+        }
+
+        .menu-toggle {
+            margin-bottom: auto;
+            align-self: flex-start;
+            margin-left: 1.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .links {
+            @include mixins.FlexAlignCenter;
+            flex-direction: column;
+            position: relative;
+            top: 50%;
+            transform: translateY(calc(-50% - 4rem));
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            margin-bottom: auto;
+
+            .link a {
+                display: block;
+                position: relative;
+                text-align: center;
+                margin: 1.5rem;
+                padding: 0.5rem;
+                color: inherit;
+                text-decoration: none;
+
+                &::after {
+                    position: absolute;
+                    content: '';
+                    height: 0.2rem;
+                    background-color: theme.$font-color;
+                    width: 0px;
+                    bottom: 0.25rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    transition: width 0.25s ease-in-out;
+                }
+
+                &:hover,
+                &:focus-visible {
+                    cursor: pointer;
+
+                    &::after {
+                        width: calc(100% - 0.5rem);
+                    }
+                }
+
+
+
+                &.active {
+                    
+                    &:focus-visible {
+                        box-shadow: theme.$link-box-shadow map-get(theme.$movie-watch-red, A200);
+                    }
+
+                    &::after {
+                        width: calc(100% - 0.5rem);
+                        background-color: map-get(theme.$movie-watch-red, A200);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 38rem) {
+
+    header.top-header {
+        padding: 0 2rem;
+        justify-content: space-between;
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6);
+
+        .logo-wrapper {
+            flex: 0;
+            margin: 0;
+            margin-left: 1rem;
+        }
+
+        .menu-toggle {
+
+            &.open {
+                display: none;
+            }
+        }
+
+        .navigation {
+            position: static;
+            width: auto;
+            max-width: none;
+            transform: none;
+            height: 100%;
+            box-shadow: none;
+
+            .links {
+                position: static;
+                flex-direction: row;
+                transform: none;
+                height: 100%;
+
+                .link a {
+                    margin: 0 1.25rem;
+                }
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+    }
+}

@@ -1,0 +1,46 @@
+@use '../global/theme';
+
+.loader {
+    height: 5rem;
+    width: 5rem;
+
+    $animation-duration: 2500ms;
+
+    circle {
+        stroke-width: 6;
+        fill: none;
+        stroke: map-get(theme.$movie-watch-red, 700);
+        transform-origin: center center;
+    }
+    
+    .outer-circle {
+        stroke-dasharray: 200;
+        animation: outer-inner-circle-rotate $animation-duration linear infinite;
+    }
+    .middle-circle {
+        stroke-dasharray: 150;
+        animation: middle-circle-rotate $animation-duration linear infinite;
+    }
+    .inner-circle {
+        stroke-dasharray: 75;
+        animation: outer-inner-circle-rotate $animation-duration linear infinite;
+    }
+}
+
+@keyframes outer-inner-circle-rotate {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes middle-circle-rotate {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}

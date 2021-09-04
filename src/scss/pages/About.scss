@@ -1,0 +1,75 @@
+@use  '../global/theme';
+@use '../mixins/mixins';
+
+.about-section {
+
+    h2, h3 {
+        text-align: center;
+        margin-bottom: theme.$spacing;
+        margin-top: 0;
+    }
+
+    .overview {
+        margin-bottom: 4rem;
+    }
+
+    span {
+        @include mixins.FlexCenterCenter;
+        @include mixins.round-icon;
+        padding: 0.25rem;
+        display: inline-flex;
+
+        svg {
+            height: 1rem;
+            width: 1rem;
+        }
+    }
+
+    ol {
+        margin: 0;
+        padding-left: 1.15rem;
+
+        li:not(:last-of-type) {
+            margin-bottom: 2rem;
+        }
+    }
+
+    figure {
+        margin: theme.$spacing auto 0;
+        text-align: center;
+        
+        img {
+            width: 5rem;
+            height: auto;
+            margin: 1rem 0 0;
+            max-width: 95%;
+        }
+    }
+
+    @media screen and (min-width: 38rem) {
+        width: 60rem;
+        max-width: 90%;
+        margin: 0 auto;
+
+        h2 {
+            text-align: left;
+        }
+
+        .overview {
+            max-width: 80%;
+            margin: {
+                left: auto;
+                right: auto;
+            }
+        }
+
+        ol {
+            width: 30rem;
+            margin: {
+                left: auto;
+                right: auto;
+            }
+        }
+    }
+}
+

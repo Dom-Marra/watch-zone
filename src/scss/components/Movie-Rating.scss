@@ -1,0 +1,36 @@
+@use '../global/theme';
+@use '../mixins/mixins';
+
+
+.movie-rating {
+    border-radius: 50%;
+    box-shadow: 0px 0px 1rem rgba(#000000, 0.4);
+    width: 4rem;
+    height: 4rem;
+    fill: transparent;
+
+    &:not(:root) {
+        overflow: visible;
+    }
+
+    circle {
+        stroke-width: 8;
+        stroke: map-get(theme.$movie-watch-red, 900);
+        transform: rotate(-90deg);
+        transform-origin: center center;
+    }
+    
+    .bg {
+        stroke: #9C9C9C;
+        fill: map-get(theme.$movie-watch-red, 400);
+        transform: scaleX(-1) rotate(-90deg);
+    }
+    
+    text {
+        fill: white;
+        font-size: 1.25rem;
+    }
+}
+
+
+

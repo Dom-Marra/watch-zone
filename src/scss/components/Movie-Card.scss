@@ -1,0 +1,82 @@
+@use '../global/theme';
+@use '../mixins/mixins';
+
+.movie-card {
+    position: relative;
+    margin: 0;
+    padding-left: 1.75rem;
+    padding-top: 1.75rem;
+    box-sizing: border-box;
+    color: theme.$font-color;
+        
+    .movie-rating {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .favourite-btn {
+        position: absolute;
+        top: 4.75rem;
+        left: 0.5rem;
+        z-index: 1;
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    
+
+    .movie-core-wrapper {
+        position: relative;
+        font-size: 0.8rem;
+        width: 100%;
+        background-color: map-get(theme.$movie-watch-red, 400);
+        overflow: hidden;
+
+        .details {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0 0.75rem 0.75rem;
+            box-sizing: border-box;
+            background-color: inherit;
+            width: 100%;
+            height: calc(100% - 6rem);
+            
+            .title {
+                @include mixins.FlexCenterCenter;
+                min-height: 4rem;
+                margin: 0;
+                padding: 0.75rem 0;
+                box-sizing: border-box;
+                font-size: 0.9rem;
+                flex-shrink: 0;
+            }
+
+            .overview {
+                overflow: hidden;
+                width: 100%;
+                height: calc(100% - 2rem);
+                margin: 0;
+            }
+    
+            .bottom-details {
+                @include mixins.FlexSpaceBetween;
+                align-items: center;
+    
+                a {
+                    transition: background-color 0.3s ease-in-out;
+    
+                    &:hover, &:focus {
+                        background-color: rgba(#000, 0.2);
+                    }
+                }
+            }
+        }
+    }   
+}

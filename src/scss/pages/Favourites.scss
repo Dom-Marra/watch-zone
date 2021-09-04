@@ -1,0 +1,43 @@
+@use '../global/theme';
+@use '../mixins/mixins';
+
+.favourites-section {
+
+    h2 {
+        margin-bottom: theme.$spacing;
+        margin-top: 0;
+        text-align: center;
+    }
+
+    .no-fav-message {
+        margin: 0 auto;
+
+        .icon {
+            @include mixins.FlexCenterCenter;
+            @include mixins.round-icon;
+            display: inline-flex;
+            padding: 0.25rem;
+
+            svg {
+                height: 1rem;
+                width: 1rem;
+            }
+        }
+    }
+
+    .movies-wrapper {
+        @include mixins.movie-wrapper;
+    }
+
+    @media screen and (min-width: 38rem) {
+
+        h2 {
+            text-align: left;
+        }
+
+        .no-fav-message {
+            width: 60rem;
+            max-width: 90%;
+        }
+    }
+}

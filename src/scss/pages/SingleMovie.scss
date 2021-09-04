@@ -1,0 +1,184 @@
+@use '../global/theme';
+
+.single-movie-section {
+    box-sizing: border-box;
+    width: 100%;
+
+    .single-movie-wrapper {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .image-container {
+        background-size: cover;
+        background-position: center;
+        padding: 2rem;
+        box-sizing: border-box;
+        position: relative;
+
+        &::after {
+            content: '';
+            background-color: rgba(#000000, 0.25);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        img {
+            position: relative;
+            width: 95%;
+            max-width: 25rem;
+            margin: auto;
+            z-index: 1;
+            display: block;
+            box-sizing: border-box;
+        }
+    }
+
+    .movie-details {
+        background-color: map-get(theme.$movie-watch-red, 400);
+        color: theme.$font-color;
+        padding: 2rem 1.5rem;
+        box-sizing: border-box;
+        width: 100%;
+
+        .movie-details-top {
+            position: relative;
+
+            h2 {
+                padding: 1rem 0;
+                margin: 0;
+            }
+
+            .icons {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                top: -2rem;
+                transform: translateY(-50%);
+
+                .favourite-btn,
+                .movie-rating {
+                    margin: 0;
+                }
+
+                >:first-child {
+                    margin-right: 1rem;
+                }
+            }
+        }
+
+        .overview {
+            margin: 3rem 0;
+        }
+
+        .release-duration {
+            margin-bottom: 3rem;
+            line-height: 2rem;
+            font-weight: 400;
+        }
+    }
+
+    .genres {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+
+        .genre {
+            background-color: map-get(theme.$movie-watch-red, 600);
+            padding: 0.5rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+    }
+
+
+    @media screen and (min-width: 60em) {
+        display: flex;
+        align-items: center;
+        min-height: 100%;
+        padding-bottom: 4rem;
+        max-width: 80rem;
+        margin: auto;
+
+        .single-movie-wrapper {
+            width: 100%;
+            margin-top: 4rem;
+            margin-left: 4rem;
+            background-color: map-get(theme.$movie-watch-red, 400);
+            display: grid;
+            align-items: flex-start;
+            grid-template-columns: 25rem minmax(25rem, 1fr);
+            max-width: none;
+        }
+
+        .image-container { 
+            padding: 0;
+
+            &::after {
+                background-color: map-get(theme.$movie-watch-red, 400);
+            }
+
+            img {
+                top: -4rem;
+                left: -4rem;
+                height: auto;
+                margin: 0;
+                width: 100%;
+            }
+        }
+
+        .movie-details {
+            color: theme.$font-color;
+            padding-top: 0;
+            box-sizing: border-box;
+            transform: translateX(-4rem);
+            width: calc(100% + 4rem);
+            height: 100%;
+            margin-top: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+
+            .release-date,
+            .duration {
+                display: block;
+            }
+
+            .genres {
+                margin: 0;
+                margin-top: 2rem;
+            }
+
+            .movie-details-top { 
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                padding-top: 1rem;
+
+                h2 {
+                    padding: 0;
+                    margin: 1.5rem 0;
+                    margin-right: 2rem;
+                }
+
+                .icons {
+                    position: static;
+                    transform: none;
+                }
+            }
+
+            .overview {
+                margin: 2rem 0;
+            }
+    
+            .release-duration {
+                margin: 2rem 0;
+            }
+        }
+    }
+}

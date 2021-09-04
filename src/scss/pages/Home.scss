@@ -1,0 +1,96 @@
+@use '../global/theme';
+@use '../mixins/mixins';
+
+.home-section {
+
+    .inputs-wrapper {
+        width: 100%;
+        margin-bottom: theme.$spacing;
+
+        .inputs {
+
+            .input-wrapper:first-of-type {
+                margin-bottom: 1.5rem;
+            }
+        }
+    }
+
+    .search-text {
+        margin-bottom: theme.$spacing;
+
+        .highlighted-text {
+            color: map-get(theme.$movie-watch-red, 900);
+        }
+    }
+
+    .loader {
+        display: block;
+        margin: theme.$spacing auto 0;
+    }
+
+
+    .movies-wrapper {
+        @include mixins.movie-wrapper;
+    }
+
+    .load-more {
+        display: block;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        background-color: map-get(theme.$movie-watch-red, 500);
+        color: theme.$font-color;
+        font-family: theme.$font-family;
+        font-weight: theme.$body-font-weight;
+        font-size: 1rem;
+        margin: theme.$spacing auto 0;
+        transition: background-color 0.25s ease-in-out;
+
+        &:hover {
+            background-color: map-get(theme.$movie-watch-red, 400);
+            cursor: pointer;
+        }
+    }
+    
+
+    @media screen and (min-width: 38rem) {
+
+        .inputs-wrapper {
+
+            .inputs {
+                display: flex;
+                width: 95%;
+                margin: auto;
+                justify-content: space-around;
+
+                .input-wrapper:first-of-type {
+                    margin-bottom: 0;
+                    flex-grow: 1;
+                    max-width: 55%;
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width: 78.75em) { 
+
+        .inputs-wrapper {
+
+            .inputs {
+                display: flex;
+                width: 80%;
+                justify-content: space-between;
+
+                .input-wrapper:first-of-type {
+                    margin-bottom: 0;
+                    flex: 4;
+                    max-width: 70%;
+                }
+
+                .input-wrapper:last-of-type {
+                    flex: 1;
+                    max-width: 20%;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+@use '../global/theme';
+
+@mixin FlexCenterCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin FlexSpaceBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
+@mixin FlexAlignCenter {
+    display: flex;
+    align-items: center;
+}
+
+@mixin round-icon {
+    @include FlexCenterCenter;
+    background-color: map-get(theme.$movie-watch-red, 800);
+    color: map-get(theme.$movie-watch-red, A100);
+    border-radius: 50%;
+}
+
+@mixin movie-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+
+    .movie-card {
+        width: 15.5rem;
+        margin-right: 1rem;
+        margin-bottom: 2rem;
+        max-width: 100%;
+    }
+}
