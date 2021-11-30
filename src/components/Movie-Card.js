@@ -3,7 +3,7 @@ import '../scss/components/Movie-Card.scss';
 
 //React & Global State & Router
 import { GlobalContext } from '../store/GlobalState';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 //React Transition
@@ -27,6 +27,7 @@ function MovieCard ({movie}) {
     const { favourites } = useContext(GlobalContext);
     const { addToFavs, removeFromFavs } = useContext(GlobalContext);
 
+    const nodeRef = useRef(null);
     const [linkFocused, setLinkFocused] = useState(false);
     const [cardStyle, setCardStyle] = useState({});
     const [inProp, setInProp] = useState(false);
@@ -36,7 +37,22 @@ function MovieCard ({movie}) {
     });
     const [defaultStyle, setDefaultStyle] = useState({
         transition: 'top 0.25s ease-in-out'
-    })
+    });
+
+    
+    const toggleOverviewClamp = useCallback(() => {
+        overviewEl.current.textContent = movie.overview ? movie.overview : 'No Description available.';
+
+        if (overviewEl.current.offsetHeight < overviewEl.current.scrollHeight) {
+            
+            while (overviewEl.current.offsetHeight < overviewEl.current.scrollHeight) {
+                overviewEl.current.textContent = overviewEl.current.textContent.slice(0, -1);
+            }
+
+            overviewEl.current.textContent = overviewEl.current.textContent.slice(0, -3);
+            overviewEl.current.textContent += '...';
+        }
+    }, [movie.overview])
     
     let overviewEl = useRef(null);
     let movieCore = useRef(null);
@@ -58,26 +74,12 @@ function MovieCard ({movie}) {
     useEffect(() => {
         setCardStyle({paddingBottom: title.current.offsetHeight + 'px'});
 
-        setDefaultStyle({...defaultStyle, ...{top: `calc(100%  - ${title.current.offsetHeight}px)`}});
+        setDefaultStyle(defaultStyle => ({...defaultStyle, ...{top: `calc(100%  - ${title.current.offsetHeight}px)`}}));
         toggleOverviewClamp();
 
-        setTransitionStyle({...transitionStyle, ...{exiting: {top: `calc(100%  - ${title.current.offsetHeight}px)`}}, ...{exited: {top: `calc(100%  - ${title.current.offsetHeight}px)`}}});
-    }, []);
+        setTransitionStyle(transitionStyle => ({...transitionStyle, ...{exiting: {top: `calc(100%  - ${title.current.offsetHeight}px)`}}, ...{exited: {top: `calc(100%  - ${title.current.offsetHeight}px)`}}}));
+    }, [toggleOverviewClamp]);
 
-    function toggleOverviewClamp() {
-
-        overviewEl.current.textContent = movie.overview ? movie.overview : 'No Description available.';
-
-        if (overviewEl.current.offsetHeight < overviewEl.current.scrollHeight) {
-            
-            while (overviewEl.current.offsetHeight < overviewEl.current.scrollHeight) {
-                overviewEl.current.textContent = overviewEl.current.textContent.slice(0, -1);
-            }
-
-            overviewEl.current.textContent = overviewEl.current.textContent.slice(0, -3);
-            overviewEl.current.textContent += '...';
-        }
-    }
 
     function handleMouseEvent(hovered) {
         toggleOverviewClamp();
@@ -100,7 +102,7 @@ function MovieCard ({movie}) {
                 <img src={movie.poster_path != null ? moviePosterPath + movie.poster_path : genericMoviePoster} 
                     alt={`Movie poster of ${movie.title}`} />
 
-                <Transition in={inProp} timeout={0}>
+                <Transition nodeRef={nodeRef} in={inProp} timeout={0}>
                     {state => (
                         <div className="details"
                         style={{...defaultStyle, ...transitionStyle[state]}}
