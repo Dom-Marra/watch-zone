@@ -49,7 +49,12 @@
                 color: map-get(theme.$movie-watch-red, 500)
             }
 
-            &:hover {
+            &:focus {
+                outline: none;
+            }
+
+            &:hover,
+            &:focus {
                 background-color: rgba(#000000, 0.15);
                 cursor: pointer;
             }
