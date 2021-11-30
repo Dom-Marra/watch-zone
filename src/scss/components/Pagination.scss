@@ -1,0 +1,33 @@
+@use '../global/theme';
+
+.pagination {
+    display: grid;
+    grid-template-columns: auto 2.5rem 2.5rem;
+    justify-content: end;
+    column-gap: 1rem;
+    color: rgba(#000, 0.75);
+
+    p {
+        margin-right: 1rem;
+    }
+
+    button {
+        color: inherit;
+        background-color: transparent;
+        border: none;
+        transition: color 0.25s ease-in-out;
+
+        &:hover {
+            cursor: pointer;
+            color: map-get(theme.$movie-watch-red, 400);
+        }
+
+        &:disabled:hover {
+            cursor: not-allowed;
+        }
+
+        &:disabled {
+            opacity: 0.5;   
+        }
+    }
+}
