@@ -2,28 +2,36 @@
 import '../scss/components/Input.scss';
 
 //React Imports
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 
-function Input ({label, id, readonly, icon, child, value, className, onInput, onChange, disabled}) {
+function Input ({label, id, readonly, icon, child, value = '', className, onInput, onChange, disabled, focusedIn}) {
 
     const [focused, setFocused] = useState('');
     const [hasContent, setHasContent] = useState('');
     const input = useRef(null);
 
-    useEffect(() => {
-        checkInputVal();
-    }, []);
-
-    function checkInputVal() {
+    const checkInputVal = useCallback(() => {
         if (input.current.value) { 
             setHasContent('has-content');
         }
         else setHasContent('');
+
         if (onInput) onInput(input.current.value);
-    }
+    }, [onInput]);
+
+    useEffect(() => {
+        checkInputVal();
+    }, [checkInputVal, value]);
+
+    useEffect(() => {
+        if (focusedIn) setFocused('focused')
+        else setFocused('');
+    }, [focusedIn])
 
     function handleBlur(val) {
+        if (focusedIn) return;   
+        
         setFocused('');
         if (onChange) onChange(val);
     }
