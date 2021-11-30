@@ -12,10 +12,16 @@ import { ChevronDown } from "react-feather";
 
 function DropDown({label, id, values, onChange, disabled}) {
     const [currentValue, setCurrentValue] = useState(values?.[0]);
+    const [focusedIn, setFocusedIn] = useState(false);
 
     function setNewValue(value) {
         setCurrentValue(value);
         onChange(value);
+    }
+
+    function onEnter(target, value) {
+        setNewValue(value);
+        target.blur();
     }
     
     return (
@@ -26,6 +32,7 @@ function DropDown({label, id, values, onChange, disabled}) {
             readonly 
             icon={ <ChevronDown />} 
             disabled={disabled}
+            focusedIn={focusedIn}
             child={
                 values?.length > 0 && <ul className="drop-down-list">
                     {
@@ -35,6 +42,10 @@ function DropDown({label, id, values, onChange, disabled}) {
                                 aria-checked={currentValue === value} 
                                 onClick={() => setNewValue(value)}
                                 className={currentValue === value ? 'selected' : ''}
+                                tabIndex={0}
+                                onFocus={() => setFocusedIn(true)}
+                                onBlur={() => setFocusedIn(false)}
+                                onKeyPress={(e) => e.key === 'Enter' ? onEnter(e.target, value) : null}
                             >
                                 {value}
                             </li>

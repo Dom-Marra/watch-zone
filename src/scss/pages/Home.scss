@@ -16,9 +16,23 @@
     }
 
     .search-text {
-        margin-bottom: theme.$spacing;
+        margin-bottom: 0.25rem;
 
         .highlighted-text {
+            color: map-get(theme.$movie-watch-red, 900);
+        }
+    }
+
+    .clear-search {
+        margin-bottom: theme.$spacing;
+        border: none;
+        background-color: transparent;
+        color: map-get(theme.$movie-watch-red, 400);
+        transition: color 0.25s ease-in-out;
+        padding: 0;
+
+        &:hover {
+            cursor: pointer;
             color: map-get(theme.$movie-watch-red, 900);
         }
     }
@@ -33,24 +47,9 @@
         @include mixins.movie-wrapper;
     }
 
-    .load-more {
-        display: block;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        background-color: map-get(theme.$movie-watch-red, 500);
-        color: theme.$font-color;
-        font-family: theme.$font-family;
-        font-weight: theme.$body-font-weight;
-        font-size: 1rem;
-        margin: theme.$spacing auto 0;
-        transition: background-color 0.25s ease-in-out;
-
-        &:hover {
-            background-color: map-get(theme.$movie-watch-red, 400);
-            cursor: pointer;
-        }
+    .pagination {
+        margin-top: theme.$spacing / 2;
     }
-    
 
     @media screen and (min-width: 38rem) {
 
