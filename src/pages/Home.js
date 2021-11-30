@@ -2,7 +2,9 @@
 import '../scss/pages/Home.scss';
 
 //React Imports
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
+import { useHistory, withRouter } from 'react-router';
+import qs from 'query-string';
 
 //Globals
 import { API_FETCH, API_TOKEN, API_SEARCH, API_IMG } from "../globals/globals";
@@ -12,50 +14,66 @@ import MovieCard from "../components/Movie-Card"
 import Input from '../components/Input';
 import DropDown from '../components/Drop-Down';
 import Loader from '../components/loader';
+import Pagination from '../components/Pagination';
 
 //Icons
 import { Search } from 'react-feather';
 
 function Home () {
     const DROP_DOWN_VALUES = ["Popular", "Top Rated", "Upcoming", "Now Playing"];
-    const [sort, setSort] = useState('popular');
+    const history = useHistory();
     const [movieData, setMovieData] = useState([]);
-    const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
     const [maxPages, setMaxPages] = useState(1);
+    const [search, setSearch] = useState(qs.parse(history.location.search).search);
 
     useEffect(() => {
-        fetchMovies();
-    }, [sort, page, search]);
-
-    async function fetchMovies() {
-
-        setLoading(true);
-
-        let fetchUrl;
+        async function fetchMovies () {
+            const { search, sort, page } = qs.parse(history.location.search);
+            let fetchUrl;
     
-        if (!search) fetchUrl = `${API_FETCH + sort}?language=en-US&page=${page}`;
-        else fetchUrl = `${API_SEARCH}?query=${search}&page=${page}`; 
+            setLoading(true);
+            setMovieData([]);
+    
+            if (!search) fetchUrl = `${API_FETCH + (sort ? sort : 'popular')}?language=en-US&page=${page ? page : 1}`;
+            else fetchUrl = `${API_SEARCH}?query=${search}&page=${page ? page : 1}`; 
+    
+            const res = await fetch(fetchUrl, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + API_TOKEN
+                }
+            });
+    
+            const responseData = await res.json();
+    
+            setMaxPages(responseData.total_pages);
+    
+            Promise.all(preloadMoviePosters(responseData.results)).then(() => {
+                setLoading(false);
+                setMovieData(responseData.results);
+            });
+        }
 
-        const res = await fetch(fetchUrl, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + API_TOKEN
-            }
-        });
+        fetchMovies();
 
-        const responseData = await res.json();
+    }, [history.location.search]);
 
-        setMaxPages(responseData.total_pages);
+    function handleSearchInput(cleared = false) {
+        const qSearch = qs.parse(history.location.search).search;
+        const cleanedSearch = search?.trim();
 
-        console.log(responseData);
-
-        Promise.all(preloadMoviePosters(responseData.results)).then(() => {
-            setLoading(false);
-            setMovieData([...movieData, ...responseData.results]);
-        });
+        if (cleanedSearch === qSearch && !cleared) {
+            return;
+        } else if (cleared || (!cleanedSearch && qSearch)) {
+            history.push({});
+        } else if (cleanedSearch) {
+            history.push({
+                pathName: '/',
+                search: `?search=${cleanedSearch}&page=${1}`
+            });
+        }
     }
 
     function preloadMoviePosters(movies) {
@@ -82,26 +100,24 @@ function Home () {
     function handleSortInput(val) {
         const sortValues = ['popular', 'top_rated', 'upcoming', 'now_playing'];
         const selectValIndex = DROP_DOWN_VALUES.findIndex(sort => sort === val);
+        const { search, sort } = qs.parse(history.location.search);
 
         if (!search && sortValues[selectValIndex] !== sort) {
-            setPage(1);
-            setMovieData([]);
-            setSort(sortValues[selectValIndex]);
+            history.push({
+                pathName: '/',
+                search: `?sort=${sortValues[selectValIndex]}&page=${1}`
+            });
         }
     }
 
-    function handleSearchInput(val) {
-        let searchString = val.trim();
-        
-        if (searchString) {
-            setPage(1);
-            setMovieData([]);
-            setSearch(val);
-        } else if (searchString !== search) {
-            setPage(1);
-            setMovieData([]);
-            setSearch('');
-        }
+    function handleNewPage(newPage) {
+        const params = qs.parse(history.location.search);
+        const newParams = {...params, page: newPage}
+
+        history.push({
+            pathname: '/',
+            search: qs.stringify(newParams)
+        });
     }
 
     return (
@@ -112,20 +128,27 @@ function Home () {
                     <Input label="Search" 
                         id="movie-search" 
                         icon={ <Search /> } 
-                        onChange={handleSearchInput}
+                        onInput={setSearch}
+                        onChange={(e) => handleSearchInput()}
+                        value={search}
                     />
                     <DropDown label="Sort" 
                         id="movie-sort" 
                         values={DROP_DOWN_VALUES} 
                         onChange={handleSortInput}
-                        disabled={search}
+                        disabled={qs.parse(history.location.search).search}
                     />
                 </div>
             </div>
 
             {
-                search && 
-                <h2 className="search-text">Searching for <span className="highlighted-text">{search}</span></h2>
+                qs.parse(history.location.search).search && (
+                    <>
+                        <h2 className="search-text">Searching for <span className="highlighted-text">{qs.parse(history.location.search).search}</span></h2>
+                        <button className="clear-search" onClick={() => { setSearch(); handleSearchInput(true); }}>Clear search</button>
+                    </>
+                )
+                
             }
 
             
@@ -142,10 +165,14 @@ function Home () {
             
             {
                 loading ? <Loader></Loader> :
-                maxPages !== page && <button className="load-more" onClick={() => {setPage(page + 1)}}>Load More</button>
+                <Pagination 
+                    pages={maxPages} 
+                    currentPage={qs.parse(history.location.search).page ? parseInt((qs.parse(history.location.search).page)) : 1} 
+                    onChange={handleNewPage} 
+                />
             }
         </section>
     )
 }
 
-export default Home;
+export default withRouter(Home);
